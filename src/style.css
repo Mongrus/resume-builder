@@ -47,14 +47,17 @@
 /* Mobile preview: scale A4 to fit screen width */
 .mobile-preview-wrapper {
   transform-origin: top left;
-  width: fit-content;
+  width: 793px;
 }
 
 @media (max-width: 767px) {
   .mobile-preview-wrapper {
-    /* A4 is 210mm ≈ 793px. Scale to fit viewport minus padding */
-    transform: scale(calc((100vw - 32px) / 793));
-    margin-bottom: calc(-297mm * (1 - (100vw - 32px) / 793));
+    /* A4 is 210mm ≈ 793px. Scale to fit viewport minus padding (p-4 = 16px * 2) */
+    --preview-scale: calc((100vw - 32px) / 793);
+    transform: scale(var(--preview-scale));
+    /* Compensate for the space the unscaled element would take */
+    margin-bottom: calc(-1122px * (1 - var(--preview-scale)));
+    width: 793px;
   }
 }
 

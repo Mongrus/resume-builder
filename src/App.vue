@@ -9,6 +9,7 @@ const { locale, t } = useI18n()
 const store = useResumeStore()
 
 const previewViewRef = ref(null)
+const mobilePreviewRef = ref(null)
 const previewPanelRef = ref(null)
 const showPicker = ref(false)
 const showMobilePreview = ref(false)
@@ -59,6 +60,7 @@ function updatePosition() {
   const rect = btnRef.value.getBoundingClientRect()
 
   const pickerHeight = 260 // approximate
+  const pickerWidth = 288 // w-72 = 18rem = 288px
   const spaceBelow = window.innerHeight - rect.bottom
 
   let top = rect.bottom + 8
@@ -68,10 +70,17 @@ function updatePosition() {
     top = rect.top - pickerHeight - 8
   }
 
+  // Constrain left so picker stays within viewport
+  let left = rect.left
+  const maxLeft = window.innerWidth - pickerWidth - 8
+  if (left > maxLeft) {
+    left = Math.max(8, maxLeft)
+  }
+
   pickerStyle.value = {
     position: 'fixed',
     top: `${top}px`,
-    left: `${rect.left}px`
+    left: `${left}px`
   }
 }
 
@@ -224,9 +233,9 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- Preview content — scrollable, scaled -->
-        <div class="flex-1 overflow-auto bg-slate-700/30 p-4">
+        <div class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-700/30 p-4">
           <div class="mobile-preview-wrapper">
-            <PreviewView />
+            <PreviewView ref="mobilePreviewRef" />
           </div>
         </div>
 

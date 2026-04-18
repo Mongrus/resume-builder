@@ -3,38 +3,16 @@
  *
  * Instead of rasterising the resume with html2canvas (which loses links,
  * mangles small UI elements and cannot do intelligent page breaks), we
- * open the resume HTML in a dedicated print window and let the browser's
- * native renderer handle it.  The result is a vector PDF with:
+ * use the browser's native print renderer.  The result is a vector PDF with:
  *   - clickable links
  *   - sharp text at any zoom
  *   - CSS break-inside:avoid honoured per section
+ *
+ * On mobile, window.open is often blocked as a popup, so we use an iframe
+ * approach instead.
  */
 
-export function downloadPdf(elementRef) {
-  const element = elementRef.value || elementRef
-  if (!element) return
-
-  // Collect every inline style already on the tree (theme styles).
-  // We also need the base .a4-page styles that normally come from the
-  // stylesheet — they are applied inline below because the print window
-  // has no access to the app's CSS bundle.
-
-  const printWindow = window.open('', '_blank', 'width=900,height=700')
-  if (!printWindow) {
-    alert('Please allow pop-ups for PDF export.')
-    return
-  }
-
-  // Clone the resume DOM so we don't touch the live page.
-  const clone = element.cloneNode(true)
-
-  // Build the print document
-  printWindow.document.write(`<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Resume</title>
-<style>
+const printStyles = `
   /* ---- Reset ---- */
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -70,8 +48,8 @@ export function downloadPdf(elementRef) {
     section {
       break-inside: avoid;
       page-break-inside: avoid;
-      padding-top: 10mm;      /* top spacing when section lands on a new page */
-      margin-top: -10mm;      /* offset so it doesn't add space on page 1 */
+      padding-top: 10mm;
+      margin-top: -10mm;
     }
 
     /* Each experience / education / project block stays together */
@@ -80,19 +58,17 @@ export function downloadPdf(elementRef) {
       page-break-inside: avoid;
     }
 
-    /* If the header is too big, allow a break after it but not inside */
     .a4-page > div:first-child {
       break-inside: avoid;
       page-break-inside: avoid;
     }
 
-    /* Hide box-shadow in print (not supported) */
     .a4-page {
       box-shadow: none !important;
     }
   }
 
-  /* ---- Screen preview (the flash before print dialog) ---- */
+  /* ---- Screen preview ---- */
   @media screen {
     body {
       display: flex;
@@ -107,26 +83,90 @@ export function downloadPdf(elementRef) {
 
   /* ---- Links ---- */
   a { color: inherit; text-decoration: none; }
-</style>
+`
+
+function buildPrintHTML(clone) {
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resume</title>
+<style>${printStyles}</style>
 </head>
 <body>
 ${clone.outerHTML}
 </body>
-</html>`)
+</html>`
+}
 
+function isMobile() {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.maxTouchPoints > 1 && window.innerWidth < 1024)
+}
+
+export function downloadPdf(elementRef) {
+  const element = elementRef.value || elementRef
+  if (!element) return
+
+  const clone = element.cloneNode(true)
+  const html = buildPrintHTML(clone)
+
+  if (isMobile()) {
+    printViaIframe(html)
+  } else {
+    printViaWindow(html)
+  }
+}
+
+function printViaWindow(html) {
+  const printWindow = window.open('', '_blank', 'width=900,height=700')
+  if (!printWindow) {
+    // Fallback to iframe if popup is blocked
+    printViaIframe(html)
+    return
+  }
+
+  printWindow.document.write(html)
   printWindow.document.close()
 
-  // Wait for fonts / images, then open print dialog.
   printWindow.onload = () => {
-    // Small delay to ensure rendering is finished
     setTimeout(() => {
       printWindow.focus()
       printWindow.print()
-      // Close window after print dialog is dismissed
-      // Use onafterprint if available, otherwise a fallback timeout
       if ('onafterprint' in printWindow) {
         printWindow.onafterprint = () => printWindow.close()
       }
     }, 300)
+  }
+}
+
+function printViaIframe(html) {
+  const iframe = document.createElement('iframe')
+  iframe.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:99999;background:white;'
+  document.body.appendChild(iframe)
+
+  const doc = iframe.contentDocument || iframe.contentWindow.document
+  doc.open()
+  doc.write(html)
+  doc.close()
+
+  iframe.contentWindow.onload = () => {
+    setTimeout(() => {
+      iframe.contentWindow.focus()
+      iframe.contentWindow.print()
+
+      // Remove iframe after print dialog closes
+      const cleanup = () => {
+        document.body.removeChild(iframe)
+      }
+
+      if ('onafterprint' in iframe.contentWindow) {
+        iframe.contentWindow.onafterprint = cleanup
+      } else {
+        // Fallback: remove after a delay
+        setTimeout(cleanup, 1000)
+      }
+    }, 500)
   }
 }

@@ -97,13 +97,16 @@ async function handleJsonImport(event) {
         </svg>
         JSON
       </button>
-      <label class="flex items-center justify-center gap-2 bg-slate-600 hover:bg-slate-500 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 cursor-pointer">
+      <button
+        @click="$refs.jsonFileInput.click()"
+        class="flex items-center justify-center gap-2 bg-slate-600 hover:bg-slate-500 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 cursor-pointer"
+      >
         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
         <span class="truncate">{{ t('export.import') }}</span>
-        <input type="file" accept=".json" class="hidden" @change="handleJsonImport" />
-      </label>
+      </button>
+      <input ref="jsonFileInput" type="file" accept=".json" class="sr-only" @change="handleJsonImport" />
       <button
         @click="handleClear"
         class="flex items-center justify-center gap-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200"

@@ -3,17 +3,38 @@ export function downloadJson(resumeData) {
     const json = JSON.stringify(resumeData, null, 2)
     const blob = new Blob([json], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'resume.json'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    URL.revokeObjectURL(url)
+
+    // Try navigator.share on mobile for better UX
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'resume.json', { type: 'application/json' })] })) {
+      const file = new File([blob], 'resume.json', { type: 'application/json' })
+      navigator.share({ files: [file], title: 'Resume' }).catch(() => {
+        // User cancelled share — fall through to link download
+        triggerDownload(url)
+      })
+      return
+    }
+
+    triggerDownload(url)
   } catch (error) {
     console.error('JSON export failed:', error)
     alert('Failed to export JSON. Check console for details.')
   }
+}
+
+function triggerDownload(url) {
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'resume.json'
+  link.style.display = 'none'
+  document.body.appendChild(link)
+  // Use setTimeout for Safari/iOS compatibility
+  setTimeout(() => {
+    link.click()
+    setTimeout(() => {
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    }, 100)
+  }, 0)
 }
 
 export function importJson(file) {
