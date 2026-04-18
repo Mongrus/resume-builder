@@ -6,7 +6,7 @@
   "export": {
     "pdf": "📄 Export PDF",
     "json": "💾 Export JSON",
-    "import": "📂 Import JSON",
+    "import": "Import JSON",
     "importError": "Failed to import resume: "
   },
   "forms": {
@@ -51,6 +51,7 @@
     "addLanguage": "+ Add Language",
     "remove": "Remove",
     "clear": "Clear",
+    "preview": "Preview",
     "exampleData": "✨ Example",
     "loadExample": "Load",
     "exampleRu": "🇷🇺 Russian Resume",

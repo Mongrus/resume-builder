@@ -6,7 +6,7 @@
   "export": {
     "pdf": "📄 Экспортировать PDF",
     "json": "💾 Экспортировать JSON",
-    "import": "📂 Импортировать JSON",
+    "import": "Импортировать JSON",
     "importError": "Ошибка импорта резюме: "
   },
   "forms": {
@@ -51,6 +51,7 @@
     "addLanguage": "+ Добавить язык",
     "remove": "Удалить",
     "clear": "Очистить",
+    "preview": "Предпросмотр",
     "exampleData": "✨ Пример",
     "loadExample": "Загрузить",
     "exampleRu": "🇷🇺 Русское резюме",

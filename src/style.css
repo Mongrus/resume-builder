@@ -43,6 +43,43 @@
   box-sizing: border-box;
 }
 
+
+/* Mobile preview: scale A4 to fit screen width */
+.mobile-preview-wrapper {
+  transform-origin: top left;
+  width: fit-content;
+}
+
+@media (max-width: 767px) {
+  .mobile-preview-wrapper {
+    /* A4 is 210mm ≈ 793px. Scale to fit viewport minus padding */
+    transform: scale(calc((100vw - 32px) / 793));
+    margin-bottom: calc(-297mm * (1 - (100vw - 32px) / 793));
+  }
+}
+
+/* Slide-up transition for mobile preview overlay */
+.slide-up-enter-active {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide-up-leave-active {
+  transition: transform 0.3s cubic-bezier(0.5, 0, 0.75, 0);
+}
+
+.slide-up-enter-from {
+  transform: translateY(100%);
+}
+
+.slide-up-leave-to {
+  transform: translateY(100%);
+}
+
+.slide-up-enter-to,
+.slide-up-leave-from {
+  transform: translateY(0);
+}
+
 /* Collapsible section animations */
 .section-collapse-enter-active,
 .section-collapse-leave-active {

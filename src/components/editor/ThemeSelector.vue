@@ -15,13 +15,13 @@ const themeStore = useThemeStore()
       </svg>
       <span class="text-sm font-medium text-slate-200">{{ t('themes.title') }}</span>
     </div>
-    <div class="flex gap-2">
+    <div class="grid grid-cols-5 gap-2">
       <button
         v-for="theme in themeList"
         :key="theme.id"
         @click="themeStore.setTheme(theme.id)"
         :class="[
-          'flex-1 group relative  rounded-lg p-2 transition-all duration-200 border-2',
+          'group relative rounded-lg p-2 transition-all duration-200 border-2 min-w-0',
           themeStore.activeTheme === theme.id
             ? 'border-indigo-500 bg-slate-700/50 shadow-lg shadow-indigo-500/10'
             : 'border-slate-700/50 bg-slate-800/50 hover:border-slate-600 hover:bg-slate-700/30'
@@ -38,7 +38,7 @@ const themeStore = useThemeStore()
           <!-- Mini header bar -->
           <div
             :style="{
-              height: theme.id === 'bold' ? '35%' : '4px',
+              height: theme.id === 'bold' ? '24%' : '4px',
               background: theme.id === 'bold' ? '#0f172a' : theme.accent,
               margin: theme.id === 'bold' ? '0' : '6px 6px 0 6px',
               borderRadius: theme.id === 'bold' ? '0' : '1px',
@@ -48,22 +48,22 @@ const themeStore = useThemeStore()
           >
             <div
               v-if="theme.id === 'bold'"
-              style="position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 60%; height: 3px; border-radius: 1px;"
+              style="position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 60%; height: 3px; border-radius: 1px;"
               :style="{ background: theme.accent }"
             />
           </div>
           <!-- Mini content lines -->
-          <div :style="{ padding: theme.id === 'bold' ? '4px 6px' : '5px 6px' }">
+          <div style="padding: 5px 6px;">
             <div
               :style="{ height: '2px', width: '50%', background: theme.accent, marginBottom: '3px', borderRadius: '1px', marginLeft: theme.id === 'classic' || theme.id === 'minimal' ? 'auto' : '0', marginRight: theme.id === 'classic' || theme.id === 'minimal' ? 'auto' : '0' }"
             />
-            <div style="height: 1.5px; width: 80%; background: #e2e8f0; margin-bottom: 2px; border-radius: 1px;" />
-            <div style="height: 1.5px; width: 65%; background: #e2e8f0; margin-bottom: 4px; border-radius: 1px;" />
+            <div :style="{ height: '1.5px', width: '80%', marginBottom: '2px', borderRadius: '1px', background: theme.id === 'bold' ? '#334155' : '#e2e8f0' }" />
+            <div :style="{ height: '1.5px', width: '65%', marginBottom: '4px', borderRadius: '1px', background: theme.id === 'bold' ? '#334155' : '#e2e8f0' }" />
             <div
               :style="{ height: '2px', width: '40%', background: theme.accent, marginBottom: '3px', borderRadius: '1px', opacity: '0.6' }"
             />
-            <div style="height: 1.5px; width: 90%; background: #e2e8f0; margin-bottom: 2px; border-radius: 1px;" />
-            <div style="height: 1.5px; width: 70%; background: #e2e8f0; border-radius: 1px;" />
+            <div :style="{ height: '1.5px', width: '90%', marginBottom: '2px', borderRadius: '1px', background: theme.id === 'bold' ? '#334155' : '#e2e8f0' }" />
+            <div :style="{ height: '1.5px', width: '70%', borderRadius: '1px', background: theme.id === 'bold' ? '#334155' : '#e2e8f0' }" />
           </div>
         </div>
         <!-- Theme name -->
