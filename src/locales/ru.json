@@ -1,0 +1,70 @@
+{
+  "app": {
+    "title": "Конструктор резюме",
+    "language": "Язык"
+  },
+  "export": {
+    "pdf": "📄 Экспортировать PDF",
+    "json": "💾 Экспортировать JSON",
+    "import": "📂 Импортировать JSON",
+    "importError": "Ошибка импорта резюме: "
+  },
+  "forms": {
+    "personalInfo": "Личная информация",
+    "summary": "Профессиональное резюме",
+    "experience": "Опыт работы",
+    "education": "Образование",
+    "skills": "Навыки",
+    "projects": "Проекты",
+    "languages": "Языки"
+  },
+  "fields": {
+    "fullName": "Полное имя",
+    "jobTitle": "Должность",
+    "email": "Электронная почта",
+    "phone": "Телефон",
+    "location": "Местоположение",
+    "linkedinUrl": "URL LinkedIn",
+    "githubUrl": "URL GitHub",
+    "website": "Веб-сайт",
+    "summary": "Напишите краткое профессиональное резюме...",
+    "company": "Компания",
+    "position": "Должность",
+    "startDate": "Дата начала",
+    "endDate": "Дата окончания",
+    "current": "Работаю здесь сейчас",
+    "description": "Описание должности и достижения...",
+    "institution": "Университет / Школа",
+    "degree": "Степень (например, Бакалавриат, Магистратура)",
+    "field": "Область изучения",
+    "projectName": "Название проекта",
+    "projectDescription": "Описание проекта...",
+    "technologiesUsed": "Используемые технологии",
+    "projectUrl": "URL проекта",
+    "languageName": "Название языка"
+  },
+  "buttons": {
+    "add": "+ Добавить",
+    "addExperience": "+ Добавить опыт работы",
+    "addEducation": "+ Добавить образование",
+    "addProject": "+ Добавить проект",
+    "addLanguage": "+ Добавить язык",
+    "remove": "Удалить"
+  },
+  "proficiencyLevels": {
+    "basic": "Начальный",
+    "intermediate": "Средний",
+    "advanced": "Продвинутый",
+    "fluent": "Свободный",
+    "native": "Родной"
+  },
+  "resume": {
+    "summary": "Профессиональное резюме",
+    "experience": "Опыт работы",
+    "education": "Образование",
+    "skills": "Навыки",
+    "projects": "Проекты",
+    "languages": "Языки",
+    "present": "По настоящее время"
+  }
+}

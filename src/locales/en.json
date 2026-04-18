@@ -1,0 +1,70 @@
+{
+  "app": {
+    "title": "IT Resume Builder",
+    "language": "Language"
+  },
+  "export": {
+    "pdf": "📄 Export PDF",
+    "json": "💾 Export JSON",
+    "import": "📂 Import JSON",
+    "importError": "Failed to import resume: "
+  },
+  "forms": {
+    "personalInfo": "Personal Information",
+    "summary": "Professional Summary",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "projects": "Projects",
+    "languages": "Languages"
+  },
+  "fields": {
+    "fullName": "Full Name",
+    "jobTitle": "Job Title",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location",
+    "linkedinUrl": "LinkedIn URL",
+    "githubUrl": "GitHub URL",
+    "website": "Website",
+    "summary": "Write a brief professional summary...",
+    "company": "Company",
+    "position": "Position",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "current": "Currently working here",
+    "description": "Job description and achievements...",
+    "institution": "University / School",
+    "degree": "Degree (e.g., Bachelor's, Master's)",
+    "field": "Field of Study",
+    "projectName": "Project Name",
+    "projectDescription": "Project description...",
+    "technologiesUsed": "Technologies Used",
+    "projectUrl": "Project URL",
+    "languageName": "Language Name"
+  },
+  "buttons": {
+    "add": "+ Add",
+    "addExperience": "+ Add Experience",
+    "addEducation": "+ Add Education",
+    "addProject": "+ Add Project",
+    "addLanguage": "+ Add Language",
+    "remove": "Remove"
+  },
+  "proficiencyLevels": {
+    "basic": "Basic",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "fluent": "Fluent",
+    "native": "Native"
+  },
+  "resume": {
+    "summary": "Professional Summary",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "projects": "Projects",
+    "languages": "Languages",
+    "present": "Present"
+  }
+}

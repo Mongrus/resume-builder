@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --color-brand: #6366f1;
+  --color-brand-light: #e0e7ff;
+  --color-brand-dark: #4338ca;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+/* Editor panel scrollbar */
+.editor-panel::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.3);
+}
+
+/* A4 page styles for preview - these must match PDF exactly */
+.a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm 18mm;
+  background: white;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #1e293b;
+  line-height: 1.5;
+  font-size: 10pt;
+  box-sizing: border-box;
+}
+
+/* Collapsible section animations */
+.section-collapse-enter-active,
+.section-collapse-leave-active {
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.section-collapse-enter-from,
+.section-collapse-leave-to {
+  opacity: 0;
+  max-height: 0;
+}
+
+.section-collapse-enter-to,
+.section-collapse-leave-from {
+  opacity: 1;
+  max-height: 2000px;
+}
+
+/* Input focus animation */
+input:focus,
+textarea:focus,
+select:focus {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
