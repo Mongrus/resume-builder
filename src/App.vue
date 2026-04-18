@@ -1,12 +1,16 @@
 <script setup>
-import { ref, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import EditorView from '@/views/EditorView.vue'
 import PreviewView from '@/views/PreviewView.vue'
-import { useResumeStore } from '@/stores/resumeStore'
+import { useResumeStore, hasSavedResume } from '@/stores/resumeStore'
+import { useThemeStore } from '@/stores/themeStore'
 
 const { locale, t } = useI18n()
 const store = useResumeStore()
+const themeStore = useThemeStore()
+
+const showRestoreDialog = ref(false)
 
 const previewViewRef = ref(null)
 const mobilePreviewRef = ref(null)
@@ -52,7 +56,42 @@ onMounted(() => {
   if (previewPanelRef.value) {
     resizeObserver.observe(previewPanelRef.value)
   }
+
+  if (hasSavedResume()) {
+    showRestoreDialog.value = true
+  } else {
+    startAutoSave()
+  }
 })
+
+function startAutoSave() {
+  store.initAutoSave()
+  themeStore.$subscribe(() => {
+    localStorage.setItem('resume-builder-theme', themeStore.activeTheme)
+  })
+  watch(locale, (val) => {
+    localStorage.setItem('resume-builder-locale', val)
+  })
+}
+
+function restoreResume() {
+  store.loadFromStorage()
+  const savedTheme = localStorage.getItem('resume-builder-theme')
+  const savedLocale = localStorage.getItem('resume-builder-locale')
+  if (savedTheme) themeStore.setTheme(savedTheme)
+  if (savedLocale) locale.value = savedLocale
+  startAutoSave()
+  showRestoreDialog.value = false
+}
+
+function startFresh() {
+  store.clearStorage()
+  store.resetResume()
+  localStorage.removeItem('resume-builder-theme')
+  localStorage.removeItem('resume-builder-locale')
+  startAutoSave()
+  showRestoreDialog.value = false
+}
 
 function changeLanguage(lang) {
   locale.value = lang
@@ -282,6 +321,42 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </Transition>
+
+    <!-- Restore dialog -->
+    <Teleport to="body">
+      <Transition name="fade">
+        <div
+          v-if="showRestoreDialog"
+          class="fixed inset-0 z-[100000] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+        >
+          <div class="bg-slate-800 border border-slate-600 rounded-2xl shadow-2xl max-w-md w-full p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center">
+                <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </div>
+              <h2 class="text-lg font-semibold text-white">{{ t('restore.title') }}</h2>
+            </div>
+            <p class="text-slate-300 text-sm mb-6">{{ t('restore.message') }}</p>
+            <div class="flex gap-3">
+              <button
+                @click="startFresh"
+                class="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium bg-slate-600 hover:bg-slate-500 text-slate-200 transition-colors duration-200"
+              >
+                {{ t('restore.startFresh') }}
+              </button>
+              <button
+                @click="restoreResume"
+                class="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium bg-indigo-500 hover:bg-indigo-400 text-white transition-colors duration-200 shadow-lg shadow-indigo-500/30"
+              >
+                {{ t('restore.continue') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
 
     <!-- TELEPORT DROPDOWN -->
     <Teleport to="body">

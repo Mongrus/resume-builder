@@ -66,6 +66,20 @@
   transform: translateY(0);
 }
 
+/* Fade transition for restore dialog */
+.fade-enter-active {
+  transition: opacity 0.25s ease;
+}
+
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 /* Collapsible section animations */
 .section-collapse-enter-active,
 .section-collapse-leave-active {

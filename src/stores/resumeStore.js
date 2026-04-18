@@ -56,8 +56,8 @@ const testDataRu = {
     }
   ],
   languages: [
-    { name: 'Русский', level: 'native' },
-    { name: 'English', level: 'B2' }
+    { name: 'Русский', level: 'Native' },
+    { name: 'English', level: 'Advanced' }
   ]
 }
 
@@ -116,9 +116,22 @@ const testDataEn = {
     }
   ],
   languages: [
-    { name: 'English', level: 'native' },
-    { name: 'Spanish', level: 'B1' }
+    { name: 'English', level: 'Native' },
+    { name: 'Spanish', level: 'Intermediate' }
   ]
+}
+
+const STORAGE_KEY = 'resume-builder-data'
+
+export function hasSavedResume() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (!saved) return false
+    const data = JSON.parse(saved)
+    return !!(data.personal?.name || data.summary || data.experience?.length || data.education?.length || data.skills?.length || data.projects?.length)
+  } catch {
+    return false
+  }
 }
 
 export const useResumeStore = defineStore('resume', {
@@ -144,6 +157,43 @@ export const useResumeStore = defineStore('resume', {
   }),
 
   actions: {
+    saveToStorage() {
+      try {
+        const data = {
+          showPhoto: this.showPhoto,
+          photo: this.photo,
+          personal: this.personal,
+          summary: this.summary,
+          experience: this.experience,
+          education: this.education,
+          skills: this.skills,
+          projects: this.projects,
+          languages: this.languages
+        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+      } catch { /* storage full or unavailable */ }
+    },
+
+    loadFromStorage() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY)
+        if (saved) {
+          const data = JSON.parse(saved)
+          Object.assign(this, data)
+        }
+      } catch { /* corrupted data */ }
+    },
+
+    clearStorage() {
+      localStorage.removeItem(STORAGE_KEY)
+    },
+
+    initAutoSave() {
+      this.$subscribe(() => {
+        this.saveToStorage()
+      })
+    },
+
     updateField(section, data) {
       if (typeof data === 'object') {
         Object.assign(this[section], data)
@@ -204,7 +254,10 @@ export const useResumeStore = defineStore('resume', {
         id: crypto.randomUUID(),
         ...item
       }))
-      this.languages = data.languages
+      this.languages = data.languages.map(item => ({
+        id: crypto.randomUUID(),
+        ...item
+      }))
     }
   }
 })

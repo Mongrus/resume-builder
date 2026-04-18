@@ -86,6 +86,12 @@
     "cancel": "Cancel",
     "apply": "Apply"
   },
+  "restore": {
+    "title": "Continue editing?",
+    "message": "You have a saved resume from a previous session. Would you like to continue editing or start fresh?",
+    "continue": "Continue",
+    "startFresh": "Start fresh"
+  },
   "resume": {
     "summary": "Professional Summary",
     "experience": "Experience",
