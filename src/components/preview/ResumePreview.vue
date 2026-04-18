@@ -1,11 +1,16 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useResumeStore } from '@/stores/resumeStore'
+import { useThemeStore } from '@/stores/themeStore'
+import { getTheme } from '@/themes'
 
 const { t } = useI18n()
 const store = useResumeStore()
+const themeStore = useThemeStore()
 const previewRef = ref(null)
+
+const theme = computed(() => getTheme(themeStore.activeTheme))
 
 defineExpose({ previewRef })
 
@@ -26,87 +31,87 @@ function getLevelDisplay(level) {
   <div
     ref="previewRef"
     class="a4-page"
-    style="box-shadow: 0 4px 40px rgba(0,0,0,0.4);"
+    :style="[{ boxShadow: '0 4px 40px rgba(0,0,0,0.4)' }, theme.page]"
   >
     <!-- Header -->
-    <div style="text-align: center; margin-bottom: 18pt; padding-bottom: 14pt; border-bottom: 2pt solid #4338ca;">
-      <h1 style="font-size: 22pt; font-weight: 700; color: #1e293b; margin: 0; letter-spacing: -0.5px; line-height: 1.2;">
+    <div :style="theme.header">
+      <h1 :style="theme.name">
         {{ store.personal.name || 'Your Name' }}
       </h1>
-      <p v-if="store.personal.title" style="font-size: 11pt; color: #4338ca; margin: 4pt 0 0 0; font-weight: 500;">
+      <p v-if="store.personal.title" :style="theme.title">
         {{ store.personal.title }}
       </p>
-      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 6pt; margin-top: 10pt; font-size: 8.5pt; color: #475569;">
-        <span v-if="store.personal.email" style="display: inline-flex; align-items: center; gap: 3pt;">
+      <div :style="theme.contacts">
+        <a v-if="store.personal.email" :href="'mailto:' + store.personal.email" style="display: inline-flex; align-items: center; gap: 3pt; color: inherit; text-decoration: none;">
           {{ store.personal.email }}
-        </span>
-        <span v-if="store.personal.email && store.personal.phone" style="color: #cbd5e1;">|</span>
+        </a>
+        <span v-if="store.personal.email && store.personal.phone" :style="theme.contactSeparator">|</span>
         <span v-if="store.personal.phone">{{ store.personal.phone }}</span>
-        <span v-if="store.personal.phone && store.personal.location" style="color: #cbd5e1;">|</span>
+        <span v-if="store.personal.phone && store.personal.location" :style="theme.contactSeparator">|</span>
         <span v-if="store.personal.location">{{ store.personal.location }}</span>
-        <span v-if="store.personal.location && (store.personal.linkedin || store.personal.github || store.personal.website)" style="color: #cbd5e1;">|</span>
-        <span v-if="store.personal.linkedin" style="color: #4338ca;">LinkedIn</span>
-        <span v-if="store.personal.github" style="color: #4338ca;">GitHub</span>
-        <span v-if="store.personal.website" style="color: #4338ca;">Website</span>
+        <span v-if="store.personal.location && (store.personal.linkedin || store.personal.github || store.personal.website)" :style="theme.contactSeparator">|</span>
+        <a v-if="store.personal.linkedin" :href="store.personal.linkedin" target="_blank" :style="[theme.contactLink, { textDecoration: 'none' }]">LinkedIn</a>
+        <a v-if="store.personal.github" :href="store.personal.github" target="_blank" :style="[theme.contactLink, { textDecoration: 'none' }]">GitHub</a>
+        <a v-if="store.personal.website" :href="store.personal.website" target="_blank" :style="[theme.contactLink, { textDecoration: 'none' }]">Website</a>
       </div>
     </div>
 
     <!-- Summary -->
-    <section v-if="store.summary" style="margin-bottom: 16pt;">
-      <h2 style="font-size: 11pt; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8pt 0; padding-bottom: 4pt; border-bottom: 1pt solid #e2e8f0;">
-        {{ t('resume.summary') }}
+    <section v-if="store.summary" :style="{ marginBottom: theme.sectionMargin }">
+      <h2 :style="theme.sectionTitle">
+        {{ theme.sectionPrefix }}{{ t('resume.summary') }}
       </h2>
-      <p style="font-size: 9pt; line-height: 1.6; color: #334155; margin: 0; white-space: pre-line;">{{ store.summary }}</p>
+      <p :style="theme.itemDescription">{{ store.summary }}</p>
     </section>
 
     <!-- Experience -->
-    <section v-if="store.experience.length" style="margin-bottom: 16pt;">
-      <h2 style="font-size: 11pt; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8pt 0; padding-bottom: 4pt; border-bottom: 1pt solid #e2e8f0;">
-        {{ t('resume.experience') }}
+    <section v-if="store.experience.length" :style="{ marginBottom: theme.sectionMargin }">
+      <h2 :style="theme.sectionTitle">
+        {{ theme.sectionPrefix }}{{ t('resume.experience') }}
       </h2>
       <div v-for="(exp, idx) in store.experience" :key="exp.id" :style="{ marginBottom: idx < store.experience.length - 1 ? '12pt' : '0' }">
         <div style="display: flex; justify-content: space-between; align-items: baseline;">
           <div>
-            <span style="font-size: 10pt; font-weight: 600; color: #1e293b;">{{ exp.position }}</span>
-            <span v-if="exp.company" style="font-size: 9pt; color: #64748b;"> — {{ exp.company }}</span>
+            <span :style="theme.itemTitle">{{ exp.position }}</span>
+            <span v-if="exp.company" :style="theme.itemSubtitle"> — {{ exp.company }}</span>
           </div>
-          <span style="font-size: 8pt; color: #94a3b8; white-space: nowrap; margin-left: 8pt;">
+          <span :style="theme.itemDate">
             {{ exp.startDate }} — {{ exp.current ? t('resume.present') : exp.endDate }}
           </span>
         </div>
-        <p v-if="exp.description" style="font-size: 8.5pt; line-height: 1.6; color: #475569; margin: 4pt 0 0 0; white-space: pre-line;">{{ exp.description }}</p>
+        <p v-if="exp.description" :style="theme.itemDescription">{{ exp.description }}</p>
       </div>
     </section>
 
     <!-- Education -->
-    <section v-if="store.education.length" style="margin-bottom: 16pt;">
-      <h2 style="font-size: 11pt; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8pt 0; padding-bottom: 4pt; border-bottom: 1pt solid #e2e8f0;">
-        {{ t('resume.education') }}
+    <section v-if="store.education.length" :style="{ marginBottom: theme.sectionMargin }">
+      <h2 :style="theme.sectionTitle">
+        {{ theme.sectionPrefix }}{{ t('resume.education') }}
       </h2>
       <div v-for="(edu, idx) in store.education" :key="edu.id" :style="{ marginBottom: idx < store.education.length - 1 ? '10pt' : '0' }">
         <div style="display: flex; justify-content: space-between; align-items: baseline;">
           <div>
-            <span style="font-size: 10pt; font-weight: 600; color: #1e293b;">{{ edu.degree }}</span>
-            <span v-if="edu.field" style="font-size: 9pt; color: #64748b;"> — {{ edu.field }}</span>
+            <span :style="theme.itemTitle">{{ edu.degree }}</span>
+            <span v-if="edu.field" :style="theme.itemSubtitle"> — {{ edu.field }}</span>
           </div>
-          <span style="font-size: 8pt; color: #94a3b8; white-space: nowrap; margin-left: 8pt;">
+          <span :style="theme.itemDate">
             {{ edu.startDate }} — {{ edu.endDate }}
           </span>
         </div>
-        <p v-if="edu.institution" style="font-size: 8.5pt; color: #64748b; margin: 2pt 0 0 0;">{{ edu.institution }}</p>
+        <p v-if="edu.institution" :style="[theme.itemSubtitle, { margin: '2pt 0 0 0' }]">{{ edu.institution }}</p>
       </div>
     </section>
 
     <!-- Skills -->
-    <section v-if="store.skills.length" style="margin-bottom: 16pt;">
-      <h2 style="font-size: 11pt; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8pt 0; padding-bottom: 4pt; border-bottom: 1pt solid #e2e8f0;">
-        {{ t('resume.skills') }}
+    <section v-if="store.skills.length" :style="{ marginBottom: theme.sectionMargin }">
+      <h2 :style="theme.sectionTitle">
+        {{ theme.sectionPrefix }}{{ t('resume.skills') }}
       </h2>
       <div style="display: flex; flex-wrap: wrap; gap: 4pt;">
         <span
           v-for="(skill, index) in store.skills"
           :key="index"
-          style="display: inline-block; background: #eef2ff; color: #4338ca; font-size: 8pt; padding: 3pt 8pt; border-radius: 3pt; font-weight: 500;"
+          :style="theme.skillTag"
         >
           {{ skill }}
         </span>
@@ -114,18 +119,18 @@ function getLevelDisplay(level) {
     </section>
 
     <!-- Projects -->
-    <section v-if="store.projects.length" style="margin-bottom: 16pt;">
-      <h2 style="font-size: 11pt; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8pt 0; padding-bottom: 4pt; border-bottom: 1pt solid #e2e8f0;">
-        {{ t('resume.projects') }}
+    <section v-if="store.projects.length" :style="{ marginBottom: theme.sectionMargin }">
+      <h2 :style="theme.sectionTitle">
+        {{ theme.sectionPrefix }}{{ t('resume.projects') }}
       </h2>
       <div v-for="(proj, idx) in store.projects" :key="proj.id" :style="{ marginBottom: idx < store.projects.length - 1 ? '10pt' : '0' }">
         <div style="display: flex; justify-content: space-between; align-items: baseline;">
-          <span style="font-size: 10pt; font-weight: 600; color: #1e293b;">{{ proj.name }}</span>
-          <span v-if="proj.url" style="font-size: 7.5pt; color: #4338ca;">{{ proj.url }}</span>
+          <span :style="theme.itemTitle">{{ proj.name }}</span>
+          <a v-if="proj.url" :href="proj.url" target="_blank" :style="[theme.contactLink, { fontSize: '9.5pt', textDecoration: 'none' }]">{{ proj.url }}</a>
         </div>
-        <p v-if="proj.description" style="font-size: 8.5pt; line-height: 1.6; color: #475569; margin: 3pt 0 0 0; white-space: pre-line;">{{ proj.description }}</p>
+        <p v-if="proj.description" :style="[theme.itemDescription, { margin: '3pt 0 0 0' }]">{{ proj.description }}</p>
         <div v-if="proj.tech.length" style="display: flex; flex-wrap: wrap; gap: 3pt; margin-top: 5pt;">
-          <span v-for="(tech, index) in proj.tech" :key="index" style="font-size: 7.5pt; background: #f1f5f9; color: #475569; padding: 2pt 6pt; border-radius: 2pt;">
+          <span v-for="(tech, index) in proj.tech" :key="index" :style="theme.techTag">
             {{ tech }}
           </span>
         </div>
@@ -134,13 +139,13 @@ function getLevelDisplay(level) {
 
     <!-- Languages -->
     <section v-if="store.languages.length">
-      <h2 style="font-size: 11pt; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8pt 0; padding-bottom: 4pt; border-bottom: 1pt solid #e2e8f0;">
-        {{ t('resume.languages') }}
+      <h2 :style="theme.sectionTitle">
+        {{ theme.sectionPrefix }}{{ t('resume.languages') }}
       </h2>
       <div style="display: flex; flex-wrap: wrap; gap: 12pt;">
-        <div v-for="lang in store.languages" :key="lang.id" style="font-size: 9pt;">
-          <span style="font-weight: 600; color: #1e293b;">{{ lang.name }}</span>
-          <span style="color: #64748b;"> — {{ getLevelDisplay(lang.level) }}</span>
+        <div v-for="lang in store.languages" :key="lang.id" style="font-size: 10pt;">
+          <span :style="theme.itemTitle">{{ lang.name }}</span>
+          <span :style="theme.itemSubtitle"> — {{ getLevelDisplay(lang.level) }}</span>
         </div>
       </div>
     </section>

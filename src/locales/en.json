@@ -58,6 +58,14 @@
     "fluent": "Fluent",
     "native": "Native"
   },
+  "themes": {
+    "title": "Resume Style",
+    "classic": "Classic",
+    "modern": "Modern",
+    "terminal": "Terminal",
+    "minimal": "Minimal",
+    "bold": "Bold"
+  },
   "resume": {
     "summary": "Professional Summary",
     "experience": "Experience",

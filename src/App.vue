@@ -3,13 +3,16 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import EditorView from '@/views/EditorView.vue'
 import PreviewView from '@/views/PreviewView.vue'
+import { useResumeStore } from '@/stores/resumeStore'
 
 const { locale, t } = useI18n()
+const store = useResumeStore()
+const isDev = import.meta.env.DEV
 
 const previewViewRef = ref(null)
 
 function getPreviewRef() {
-  return previewViewRef.value?.previewRef
+  return previewViewRef.value?.previewRef?.previewRef
 }
 
 function changeLanguage(lang) {
@@ -30,6 +33,15 @@ function changeLanguage(lang) {
             </svg>
           </div>
           <h1 class="text-base font-semibold text-white tracking-tight">{{ t('app.title') }}</h1>
+        </div>
+        <div class="flex items-center gap-2">
+          <button
+            v-if="isDev"
+            @click="store.fillTestData()"
+            class="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-all duration-200"
+          >
+            Test Data
+          </button>
         </div>
         <div class="flex gap-1 bg-slate-700/50 rounded-lg p-0.5">
           <button

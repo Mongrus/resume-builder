@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useResumeStore } from '@/stores/resumeStore'
 import { downloadPdf } from '@/utils/pdfExport'
 import { downloadJson, importJson } from '@/utils/jsonExport'
+import ThemeSelector from '@/components/editor/ThemeSelector.vue'
 import PersonalInfoForm from '@/components/editor/PersonalInfoForm.vue'
 import SummaryForm from '@/components/editor/SummaryForm.vue'
 import ExperienceForm from '@/components/editor/ExperienceForm.vue'
@@ -18,7 +19,7 @@ const store = useResumeStore()
 const props = defineProps({
   previewRef: {
     type: Object,
-    required: true
+    default: null
   }
 })
 
@@ -37,6 +38,7 @@ function toggleSection(key) {
 }
 
 async function handlePdfExport() {
+  if (!props.previewRef) return
   await downloadPdf(props.previewRef)
 }
 
@@ -97,6 +99,9 @@ async function handleJsonImport(event) {
         <input type="file" accept=".json" class="hidden" @change="handleJsonImport" />
       </label>
     </div>
+
+    <!-- Theme Selector -->
+    <ThemeSelector />
 
     <!-- Sections -->
     <div class="space-y-2">
