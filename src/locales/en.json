@@ -49,7 +49,11 @@
     "addEducation": "+ Add Education",
     "addProject": "+ Add Project",
     "addLanguage": "+ Add Language",
-    "remove": "Remove"
+    "remove": "Remove",
+    "exampleData": "✨ Example",
+    "loadExample": "Load",
+    "exampleRu": "🇷🇺 Russian Resume",
+    "exampleEn": "🇬🇧 English Resume"
   },
   "proficiencyLevels": {
     "basic": "Basic",

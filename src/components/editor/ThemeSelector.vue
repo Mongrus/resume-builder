@@ -21,7 +21,7 @@ const themeStore = useThemeStore()
         :key="theme.id"
         @click="themeStore.setTheme(theme.id)"
         :class="[
-          'flex-1 group relative rounded-lg p-2 transition-all duration-200 border-2',
+          'flex-1 group relative  rounded-lg p-2 transition-all duration-200 border-2',
           themeStore.activeTheme === theme.id
             ? 'border-indigo-500 bg-slate-700/50 shadow-lg shadow-indigo-500/10'
             : 'border-slate-700/50 bg-slate-800/50 hover:border-slate-600 hover:bg-slate-700/30'

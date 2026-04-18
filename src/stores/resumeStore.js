@@ -1,5 +1,125 @@
 import { defineStore } from 'pinia'
 
+const testDataRu = {
+  personal: {
+    name: 'Алексей Петров',
+    title: 'Senior Frontend Developer',
+    email: 'alexey.petrov@example.com',
+    phone: '+7 (999) 123-45-67',
+    location: 'Москва, Россия',
+    linkedin: 'linkedin.com/in/alexeypetrov',
+    github: 'github.com/alexeypetrov',
+    website: 'alexeypetrov.dev'
+  },
+  summary: 'Опытный фронтенд-разработчик с 6+ годами коммерческой разработки. Специализируюсь на Vue.js и React. Имею опыт построения сложных SPA, оптимизации производительности и менторства junior-разработчиков.',
+  experience: [
+    {
+      company: 'Яндекс',
+      position: 'Senior Frontend Developer',
+      startDate: '2022-03',
+      endDate: '',
+      current: true,
+      description: 'Разработка и поддержка внутренних инструментов на Vue 3. Оптимизация производительности, код-ревью, менторство.'
+    },
+    {
+      company: 'Сбер',
+      position: 'Frontend Developer',
+      startDate: '2019-06',
+      endDate: '2022-02',
+      current: false,
+      description: 'Разработка интерфейсов для интернет-банкинга на React. Внедрение дизайн-системы, написание unit-тестов.'
+    }
+  ],
+  education: [
+    {
+      institution: 'МГТУ им. Баумана',
+      degree: 'Бакалавр',
+      field: 'Информатика и вычислительная техника',
+      startDate: '2015-09',
+      endDate: '2019-06'
+    }
+  ],
+  skills: ['JavaScript', 'TypeScript', 'Vue.js', 'React', 'Node.js', 'Tailwind CSS', 'Git', 'Docker', 'REST API', 'GraphQL'],
+  projects: [
+    {
+      name: 'TaskFlow',
+      description: 'Канбан-доска для управления задачами с real-time синхронизацией через WebSocket.',
+      tech: ['Vue 3', 'Pinia', 'Node.js', 'Socket.io'],
+      url: 'https://github.com/alexeypetrov/taskflow'
+    },
+    {
+      name: 'DevBlog',
+      description: 'Персональный блог с SSR на Nuxt 3 и CMS на Strapi.',
+      tech: ['Nuxt 3', 'Strapi', 'PostgreSQL'],
+      url: 'https://alexeypetrov.dev/blog'
+    }
+  ],
+  languages: [
+    { name: 'Русский', level: 'native' },
+    { name: 'English', level: 'B2' }
+  ]
+}
+
+const testDataEn = {
+  personal: {
+    name: 'Alex Mitchell',
+    title: 'Senior Frontend Developer',
+    email: 'alex.mitchell@example.com',
+    phone: '+1 (555) 123-4567',
+    location: 'San Francisco, CA',
+    linkedin: 'linkedin.com/in/alexmitchell',
+    github: 'github.com/alexmitchell',
+    website: 'alexmitchell.dev'
+  },
+  summary: 'Results-driven frontend engineer with 6+ years of professional experience building scalable applications. Specialized in Vue.js and React. Proven track record in architecting complex SPAs, performance optimization, and mentoring junior developers.',
+  experience: [
+    {
+      company: 'Google',
+      position: 'Senior Frontend Engineer',
+      startDate: '2022-03',
+      endDate: '',
+      current: true,
+      description: 'Architecting and maintaining internal tools using Vue 3. Led performance optimization initiatives resulting in 40% improvement. Code review and mentoring senior engineers.'
+    },
+    {
+      company: 'Meta',
+      position: 'Frontend Engineer',
+      startDate: '2019-06',
+      endDate: '2022-02',
+      current: false,
+      description: 'Developed user-facing React interfaces for mobile and web. Implemented design system components and comprehensive unit test coverage.'
+    }
+  ],
+  education: [
+    {
+      institution: 'Stanford University',
+      degree: 'Bachelor of Science',
+      field: 'Computer Science',
+      startDate: '2015-09',
+      endDate: '2019-06'
+    }
+  ],
+  skills: ['JavaScript', 'TypeScript', 'Vue.js', 'React', 'Node.js', 'Tailwind CSS', 'Git', 'Docker', 'REST API', 'GraphQL'],
+  projects: [
+    {
+      name: 'TaskFlow',
+      description: 'Real-time collaborative kanban board with WebSocket synchronization and offline support.',
+      tech: ['Vue 3', 'Pinia', 'Node.js', 'Socket.io'],
+      url: 'https://github.com/alexmitchell/taskflow'
+    },
+    {
+      name: 'DevBlog',
+      description: 'Personal tech blog built with Nuxt 3 and headless CMS integration with million+ monthly visitors.',
+      tech: ['Nuxt 3', 'Strapi', 'PostgreSQL'],
+      url: 'https://alexmitchell.dev/blog'
+    }
+  ],
+  languages: [
+    { name: 'English', level: 'native' },
+    { name: 'Spanish', level: 'B1' }
+  ]
+}
+
 export const useResumeStore = defineStore('resume', {
   state: () => ({
     personal: {
@@ -61,69 +181,25 @@ export const useResumeStore = defineStore('resume', {
       this.$reset()
     },
 
-    fillTestData() {
-      this.personal = {
-        name: 'Алексей Петров',
-        title: 'Senior Frontend Developer',
-        email: 'alexey.petrov@example.com',
-        phone: '+7 (999) 123-45-67',
-        location: 'Москва, Россия',
-        linkedin: 'linkedin.com/in/alexeypetrov',
-        github: 'github.com/alexeypetrov',
-        website: 'alexeypetrov.dev'
-      }
-      this.summary = 'Опытный фронтенд-разработчик с 6+ годами коммерческой разработки. Специализируюсь на Vue.js и React. Имею опыт построения сложных SPA, оптимизации производительности и менторства junior-разработчиков.'
-      this.experience = [
-        {
-          id: crypto.randomUUID(),
-          company: 'Яндекс',
-          position: 'Senior Frontend Developer',
-          startDate: '2022-03',
-          endDate: '',
-          current: true,
-          description: 'Разработка и поддержка внутренних инструментов на Vue 3. Оптимизация производительности, код-ревью, менторство.'
-        },
-        {
-          id: crypto.randomUUID(),
-          company: 'Сбер',
-          position: 'Frontend Developer',
-          startDate: '2019-06',
-          endDate: '2022-02',
-          current: false,
-          description: 'Разработка интерфейсов для интернет-банкинга на React. Внедрение дизайн-системы, написание unit-тестов.'
-        }
-      ]
-      this.education = [
-        {
-          id: crypto.randomUUID(),
-          institution: 'МГТУ им. Баумана',
-          degree: 'Бакалавр',
-          field: 'Информатика и вычислительная техника',
-          startDate: '2015-09',
-          endDate: '2019-06'
-        }
-      ]
-      this.skills = ['JavaScript', 'TypeScript', 'Vue.js', 'React', 'Node.js', 'Tailwind CSS', 'Git', 'Docker', 'REST API', 'GraphQL']
-      this.projects = [
-        {
-          id: crypto.randomUUID(),
-          name: 'TaskFlow',
-          description: 'Канбан-доска для управления задачами с real-time синхронизацией через WebSocket.',
-          tech: ['Vue 3', 'Pinia', 'Node.js', 'Socket.io'],
-          url: 'https://github.com/alexeypetrov/taskflow'
-        },
-        {
-          id: crypto.randomUUID(),
-          name: 'DevBlog',
-          description: 'Персональный блог с SSR на Nuxt 3 и CMS на Strapi.',
-          tech: ['Nuxt 3', 'Strapi', 'PostgreSQL'],
-          url: 'https://alexeypetrov.dev/blog'
-        }
-      ]
-      this.languages = [
-        { name: 'Русский', level: 'native' },
-        { name: 'English', level: 'B2' }
-      ]
+    fillTestData(lang = 'ru') {
+      const data = lang === 'en' ? testDataEn : testDataRu
+
+      this.personal = data.personal
+      this.summary = data.summary
+      this.experience = data.experience.map(item => ({
+        id: crypto.randomUUID(),
+        ...item
+      }))
+      this.education = data.education.map(item => ({
+        id: crypto.randomUUID(),
+        ...item
+      }))
+      this.skills = data.skills
+      this.projects = data.projects.map(item => ({
+        id: crypto.randomUUID(),
+        ...item
+      }))
+      this.languages = data.languages
     }
   }
 })

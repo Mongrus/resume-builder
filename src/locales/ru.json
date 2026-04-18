@@ -49,7 +49,11 @@
     "addEducation": "+ Добавить образование",
     "addProject": "+ Добавить проект",
     "addLanguage": "+ Добавить язык",
-    "remove": "Удалить"
+    "remove": "Удалить",
+    "exampleData": "✨ Пример",
+    "loadExample": "Загрузить",
+    "exampleRu": "🇷🇺 Русское резюме",
+    "exampleEn": "🇬🇧 Английское резюме"
   },
   "proficiencyLevels": {
     "basic": "Начальный",
