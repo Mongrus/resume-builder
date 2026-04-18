@@ -1,22 +1,36 @@
+function isAndroid() {
+  return /Android/i.test(navigator.userAgent)
+}
+
 export function downloadJson(resumeData) {
   try {
     const json = JSON.stringify(resumeData, null, 2)
     const blob = new Blob([json], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    triggerDownload(url)
+
+    if (isAndroid() && navigator.share && navigator.canShare) {
+      const file = new File([blob], 'resume.json', { type: 'application/json' })
+      if (navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], title: 'Resume' }).catch(() => {
+          // User cancelled — do nothing
+        })
+        return
+      }
+    }
+
+    triggerDownload(blob)
   } catch (error) {
     console.error('JSON export failed:', error)
     alert('Failed to export JSON. Check console for details.')
   }
 }
 
-function triggerDownload(url) {
+function triggerDownload(blob) {
+  const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
   link.download = 'resume.json'
   link.style.display = 'none'
   document.body.appendChild(link)
-  // Use setTimeout for Safari/iOS compatibility
   setTimeout(() => {
     link.click()
     setTimeout(() => {

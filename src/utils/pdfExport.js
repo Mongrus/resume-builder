@@ -1,16 +1,13 @@
 /**
- * PDF export via browser print dialog.
+ * PDF export.
  *
- * Instead of rasterising the resume with html2canvas (which loses links,
- * mangles small UI elements and cannot do intelligent page breaks), we
- * use the browser's native print renderer.  The result is a vector PDF with:
- *   - clickable links
- *   - sharp text at any zoom
- *   - CSS break-inside:avoid honoured per section
- *
- * On mobile, window.open is often blocked as a popup, so we use an iframe
- * approach instead.
+ * Desktop / iOS: browser print dialog (vector PDF, clickable links, sharp text).
+ * Android: html2canvas + jsPDF → real PDF file shared via navigator.share
+ *   (Android's print dialog doesn't offer an obvious "save as PDF" UX).
  */
+
+import html2canvas from 'html2canvas'
+import { jsPDF } from 'jspdf'
 
 const printStyles = `
   /* ---- Reset ---- */
@@ -100,23 +97,88 @@ ${clone.outerHTML}
 </html>`
 }
 
+function isAndroid() {
+  return /Android/i.test(navigator.userAgent)
+}
+
 function isMobile() {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
     (navigator.maxTouchPoints > 1 && window.innerWidth < 1024)
 }
 
-export function downloadPdf(elementRef) {
+export async function downloadPdf(elementRef) {
   const element = elementRef.value || elementRef
   if (!element) return
 
-  const clone = element.cloneNode(true)
-  const html = buildPrintHTML(clone)
-
-  if (isMobile()) {
-    printViaIframe(html)
+  if (isAndroid()) {
+    await exportPdfAndroid(element)
   } else {
-    printViaWindow(html)
+    const clone = element.cloneNode(true)
+    const html = buildPrintHTML(clone)
+
+    if (isMobile()) {
+      printViaIframe(html)
+    } else {
+      printViaWindow(html)
+    }
   }
+}
+
+async function exportPdfAndroid(element) {
+  const A4_WIDTH_MM = 210
+  const A4_HEIGHT_MM = 297
+  const SCALE = 2
+
+  const canvas = await html2canvas(element, {
+    scale: SCALE,
+    useCORS: true,
+    backgroundColor: '#ffffff',
+  })
+
+  const imgData = canvas.toDataURL('image/jpeg', 0.95)
+  const pdf = new jsPDF('p', 'mm', 'a4')
+
+  const pdfWidth = A4_WIDTH_MM
+  const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+
+  let heightLeft = pdfHeight
+  let position = 0
+
+  pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, pdfHeight)
+  heightLeft -= A4_HEIGHT_MM
+
+  while (heightLeft > 0) {
+    position -= A4_HEIGHT_MM
+    pdf.addPage()
+    pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, pdfHeight)
+    heightLeft -= A4_HEIGHT_MM
+  }
+
+  const pdfBlob = pdf.output('blob')
+
+  if (navigator.share && navigator.canShare) {
+    const file = new File([pdfBlob], 'resume.pdf', { type: 'application/pdf' })
+    if (navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: 'Resume' })
+      } catch {
+        // User cancelled — do nothing
+      }
+      return
+    }
+  }
+
+  // Fallback: direct download
+  const url = URL.createObjectURL(pdfBlob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'resume.pdf'
+  document.body.appendChild(link)
+  link.click()
+  setTimeout(() => {
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }, 100)
 }
 
 function printViaWindow(html) {
