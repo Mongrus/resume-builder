@@ -11,9 +11,11 @@ const store = useResumeStore()
 const previewViewRef = ref(null)
 const mobilePreviewRef = ref(null)
 const previewPanelRef = ref(null)
+const mobilePreviewContainerRef = ref(null)
 const showPicker = ref(false)
 const showMobilePreview = ref(false)
 const previewScale = ref(1)
+const mobilePreviewScale = ref(1)
 
 const btnRef = ref(null)
 const pickerStyle = ref({})
@@ -23,7 +25,9 @@ function getPreviewRef() {
 }
 
 const A4_WIDTH = 793 // 210mm in px
+const A4_HEIGHT = 1122 // 297mm in px
 const PREVIEW_PADDING = 48 // px-6 = 24px * 2
+const MOBILE_PADDING = 32 // p-4 = 16px * 2
 
 let resizeObserver = null
 
@@ -33,9 +37,18 @@ function calcPreviewScale() {
   previewScale.value = Math.min(1, available / A4_WIDTH)
 }
 
+function calcMobilePreviewScale() {
+  if (!mobilePreviewContainerRef.value) return
+  const available = mobilePreviewContainerRef.value.clientWidth - MOBILE_PADDING
+  mobilePreviewScale.value = Math.min(1, available / A4_WIDTH)
+}
+
 onMounted(() => {
   calcPreviewScale()
-  resizeObserver = new ResizeObserver(calcPreviewScale)
+  resizeObserver = new ResizeObserver(() => {
+    calcPreviewScale()
+    calcMobilePreviewScale()
+  })
   if (previewPanelRef.value) {
     resizeObserver.observe(previewPanelRef.value)
   }
@@ -49,8 +62,17 @@ function toggleMobilePreview() {
   showMobilePreview.value = !showMobilePreview.value
   if (showMobilePreview.value) {
     document.body.style.overflow = 'hidden'
+    nextTick(() => {
+      calcMobilePreviewScale()
+      if (mobilePreviewContainerRef.value && resizeObserver) {
+        resizeObserver.observe(mobilePreviewContainerRef.value)
+      }
+    })
   } else {
     document.body.style.overflow = ''
+    if (mobilePreviewContainerRef.value && resizeObserver) {
+      resizeObserver.unobserve(mobilePreviewContainerRef.value)
+    }
   }
 }
 
@@ -233,8 +255,15 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- Preview content — scrollable, scaled -->
-        <div class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-700/30 p-4">
-          <div class="mobile-preview-wrapper">
+        <div ref="mobilePreviewContainerRef" class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-700/30 p-4">
+          <div
+            :style="{
+              width: A4_WIDTH + 'px',
+              transform: `scale(${mobilePreviewScale})`,
+              transformOrigin: 'top left',
+              marginBottom: `-${A4_HEIGHT * (1 - mobilePreviewScale)}px`
+            }"
+          >
             <PreviewView ref="mobilePreviewRef" />
           </div>
         </div>

@@ -44,23 +44,6 @@
 }
 
 
-/* Mobile preview: scale A4 to fit screen width */
-.mobile-preview-wrapper {
-  transform-origin: top left;
-  width: 793px;
-}
-
-@media (max-width: 767px) {
-  .mobile-preview-wrapper {
-    /* A4 is 210mm ≈ 793px. Scale to fit viewport minus padding (p-4 = 16px * 2) */
-    --preview-scale: calc((100vw - 32px) / 793);
-    transform: scale(var(--preview-scale));
-    /* Compensate for the space the unscaled element would take */
-    margin-bottom: calc(-1122px * (1 - var(--preview-scale)));
-    width: 793px;
-  }
-}
-
 /* Slide-up transition for mobile preview overlay */
 .slide-up-enter-active {
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
