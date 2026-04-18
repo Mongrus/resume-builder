@@ -14,6 +14,12 @@ const theme = computed(() => getTheme(themeStore.activeTheme))
 
 defineExpose({ previewRef })
 
+function normalizeUrl(url) {
+  if (!url) return url
+  if (/^https?:\/\//i.test(url)) return url
+  return 'https://' + url
+}
+
 function getLevelDisplay(level) {
   const levelMap = {
     'Basic': 'basic',
@@ -58,9 +64,9 @@ function getLevelDisplay(level) {
         <span v-if="store.personal.phone && store.personal.location" :style="theme.contactSeparator">|</span>
         <span v-if="store.personal.location">{{ store.personal.location }}</span>
         <span v-if="store.personal.location && (store.personal.linkedin || store.personal.github || store.personal.website)" :style="theme.contactSeparator">|</span>
-        <a v-if="store.personal.linkedin" :href="store.personal.linkedin" target="_blank" :style="[theme.contactLink, { textDecoration: 'none' }]">LinkedIn</a>
-        <a v-if="store.personal.github" :href="store.personal.github" target="_blank" :style="[theme.contactLink, { textDecoration: 'none' }]">GitHub</a>
-        <a v-if="store.personal.website" :href="store.personal.website" target="_blank" :style="[theme.contactLink, { textDecoration: 'none' }]">Website</a>
+        <a v-if="store.personal.linkedin" :href="normalizeUrl(store.personal.linkedin)" target="_blank" :style="[theme.contactLink, { textDecoration: 'none' }]">LinkedIn</a>
+        <a v-if="store.personal.github" :href="normalizeUrl(store.personal.github)" target="_blank" :style="[theme.contactLink, { textDecoration: 'none' }]">GitHub</a>
+        <a v-if="store.personal.website" :href="normalizeUrl(store.personal.website)" target="_blank" :style="[theme.contactLink, { textDecoration: 'none' }]">Website</a>
       </div>
     </div>
 

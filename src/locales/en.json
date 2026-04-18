@@ -70,7 +70,12 @@
     "modern": "Modern",
     "terminal": "Terminal",
     "minimal": "Minimal",
-    "bold": "Bold"
+    "bold": "Bold",
+    "royal": "Royal",
+    "noir": "Noir",
+    "ocean": "Ocean",
+    "coral": "Coral",
+    "forest": "Forest"
   },
   "photo": {
     "addPhoto": "Add photo",

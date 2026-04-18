@@ -8,9 +8,9 @@ const testDataRu = {
     email: 'alexey.petrov@example.com',
     phone: '+7 (999) 123-45-67',
     location: 'Москва, Россия',
-    linkedin: 'linkedin.com/in/alexeypetrov',
-    github: 'github.com/alexeypetrov',
-    website: 'alexeypetrov.dev'
+    linkedin: 'https://linkedin.com/in/alexeypetrov',
+    github: 'https://github.com/alexeypetrov',
+    website: 'https://alexeypetrov.dev'
   },
   summary: 'Опытный фронтенд-разработчик с 6+ годами коммерческой разработки. Специализируюсь на Vue.js и React. Имею опыт построения сложных SPA, оптимизации производительности и менторства junior-разработчиков.',
   experience: [
@@ -68,9 +68,9 @@ const testDataEn = {
     email: 'alex.mitchell@example.com',
     phone: '+1 (555) 123-4567',
     location: 'San Francisco, CA',
-    linkedin: 'linkedin.com/in/alexmitchell',
-    github: 'github.com/alexmitchell',
-    website: 'alexmitchell.dev'
+    linkedin: 'https://linkedin.com/in/alexmitchell',
+    github: 'https://github.com/alexmitchell',
+    website: 'https://alexmitchell.dev'
   },
   summary: 'Results-driven frontend engineer with 6+ years of professional experience building scalable applications. Specialized in Vue.js and React. Proven track record in architecting complex SPAs, performance optimization, and mentoring junior developers.',
   experience: [

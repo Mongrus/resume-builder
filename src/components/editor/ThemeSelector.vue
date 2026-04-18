@@ -5,6 +5,43 @@ import { themeList } from '@/themes'
 
 const { t } = useI18n()
 const themeStore = useThemeStore()
+
+const fullHeaderThemes = ['bold', 'royal', 'ocean', 'forest']
+const headerBgMap = { bold: '#0f172a', royal: '#1e1040', ocean: '#0c1a2e', forest: '#14261a' }
+
+function previewBg(theme) {
+  const map = { noir: '#0f172a' }
+  return map[theme.id] || '#ffffff'
+}
+
+function hasFullHeader(theme) {
+  return fullHeaderThemes.includes(theme.id)
+}
+
+function headerBg(theme) {
+  return headerBgMap[theme.id] || theme.accent
+}
+
+function headerAccent(theme) {
+  return theme.accent
+}
+
+function isCentered(theme) {
+  return ['classic', 'minimal', 'noir'].includes(theme.id)
+}
+
+function miniPreviewStyle(theme) {
+  const base = { background: previewBg(theme) }
+  if (theme.id === 'modern') base.borderLeft = '3px solid ' + theme.accent
+  if (theme.id === 'coral') base.borderTop = '3px solid ' + theme.accent
+  return base
+}
+
+function lineBg(theme) {
+  const darkMap = { bold: '#334155', noir: '#1e293b', royal: '#2a1a50', ocean: '#1a3040', forest: '#1e3a25' }
+  if (darkMap[theme.id]) return darkMap[theme.id]
+  return '#e2e8f0'
+}
 </script>
 
 <template>
@@ -30,40 +67,37 @@ const themeStore = useThemeStore()
         <!-- Mini preview -->
         <div
           class="w-full aspect-[210/297] rounded overflow-hidden mb-1.5 relative"
-          :style="{
-            background: theme.id === 'bold' ? '#0f172a' : '#ffffff',
-            borderLeft: theme.id === 'modern' ? '3px solid ' + theme.accent : 'none'
-          }"
+          :style="miniPreviewStyle(theme)"
         >
           <!-- Mini header bar -->
           <div
             :style="{
-              height: theme.id === 'bold' ? '24%' : '4px',
-              background: theme.id === 'bold' ? '#0f172a' : theme.accent,
-              margin: theme.id === 'bold' ? '0' : '6px 6px 0 6px',
-              borderRadius: theme.id === 'bold' ? '0' : '1px',
+              height: hasFullHeader(theme) ? '24%' : '4px',
+              background: headerBg(theme),
+              margin: hasFullHeader(theme) ? '0' : '6px 6px 0 6px',
+              borderRadius: hasFullHeader(theme) ? '0' : '1px',
               borderBottom: theme.id === 'terminal' ? '1px dashed ' + theme.accent : 'none',
               position: 'relative'
             }"
           >
             <div
-              v-if="theme.id === 'bold'"
+              v-if="hasFullHeader(theme)"
               style="position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 60%; height: 3px; border-radius: 1px;"
-              :style="{ background: theme.accent }"
+              :style="{ background: headerAccent(theme) }"
             />
           </div>
           <!-- Mini content lines -->
           <div style="padding: 5px 6px;">
             <div
-              :style="{ height: '2px', width: '50%', background: theme.accent, marginBottom: '3px', borderRadius: '1px', marginLeft: theme.id === 'classic' || theme.id === 'minimal' ? 'auto' : '0', marginRight: theme.id === 'classic' || theme.id === 'minimal' ? 'auto' : '0' }"
+              :style="{ height: '2px', width: '50%', background: theme.accent, marginBottom: '3px', borderRadius: '1px', marginLeft: isCentered(theme) ? 'auto' : '0', marginRight: isCentered(theme) ? 'auto' : '0' }"
             />
-            <div :style="{ height: '1.5px', width: '80%', marginBottom: '2px', borderRadius: '1px', background: theme.id === 'bold' ? '#334155' : '#e2e8f0' }" />
-            <div :style="{ height: '1.5px', width: '65%', marginBottom: '4px', borderRadius: '1px', background: theme.id === 'bold' ? '#334155' : '#e2e8f0' }" />
+            <div :style="{ height: '1.5px', width: '80%', marginBottom: '2px', borderRadius: '1px', background: lineBg(theme) }" />
+            <div :style="{ height: '1.5px', width: '65%', marginBottom: '4px', borderRadius: '1px', background: lineBg(theme) }" />
             <div
-              :style="{ height: '2px', width: '40%', background: theme.accent, marginBottom: '3px', borderRadius: '1px', opacity: '0.6' }"
+              :style="{ height: '2px', width: '40%', background: theme.accent, marginBottom: '3px', borderRadius: '1px', opacity: '0.6', borderLeft: theme.id === 'coral' ? '2px solid ' + theme.accent : 'none', paddingLeft: theme.id === 'coral' ? '2px' : '0' }"
             />
-            <div :style="{ height: '1.5px', width: '90%', marginBottom: '2px', borderRadius: '1px', background: theme.id === 'bold' ? '#334155' : '#e2e8f0' }" />
-            <div :style="{ height: '1.5px', width: '70%', borderRadius: '1px', background: theme.id === 'bold' ? '#334155' : '#e2e8f0' }" />
+            <div :style="{ height: '1.5px', width: '90%', marginBottom: '2px', borderRadius: '1px', background: lineBg(theme) }" />
+            <div :style="{ height: '1.5px', width: '70%', borderRadius: '1px', background: lineBg(theme) }" />
           </div>
         </div>
         <!-- Theme name -->
