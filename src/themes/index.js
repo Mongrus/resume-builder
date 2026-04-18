@@ -17,6 +17,21 @@ export const themes = {
       paddingBottom: '14pt',
       borderBottom: '2pt solid #4338ca'
     },
+    headerWithPhoto: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: '14pt',
+      textAlign: 'left'
+    },
+    photo: {
+      width: '70pt',
+      height: '70pt',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      border: '2pt solid #4338ca',
+      flexShrink: '0'
+    },
     name: {
       fontSize: '22pt',
       fontWeight: '700',
@@ -38,7 +53,8 @@ export const themes = {
       gap: '6pt',
       marginTop: '10pt',
       fontSize: '9.5pt',
-      color: '#475569'
+      color: '#475569',
+      width: '100%'
     },
     contactSeparator: { color: '#cbd5e1' },
     contactLink: { color: '#4338ca' },
@@ -89,6 +105,20 @@ export const themes = {
       paddingBottom: '14pt',
       paddingLeft: '2pt'
     },
+    headerWithPhoto: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: '14pt'
+    },
+    photo: {
+      width: '70pt',
+      height: '70pt',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      border: '2.5pt solid #0d9488',
+      flexShrink: '0'
+    },
     name: {
       fontSize: '24pt',
       fontWeight: '800',
@@ -110,7 +140,8 @@ export const themes = {
       gap: '8pt',
       marginTop: '12pt',
       fontSize: '9.5pt',
-      color: '#475569'
+      color: '#475569',
+      width: '100%'
     },
     contactSeparator: { color: '#d1d5db' },
     contactLink: { color: '#0d9488' },
@@ -163,6 +194,20 @@ export const themes = {
       paddingBottom: '14pt',
       borderBottom: '1pt dashed #86efac'
     },
+    headerWithPhoto: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: '14pt'
+    },
+    photo: {
+      width: '65pt',
+      height: '65pt',
+      borderRadius: '4pt',
+      objectFit: 'cover',
+      border: '2pt solid #16a34a',
+      flexShrink: '0'
+    },
     name: {
       fontSize: '20pt',
       fontWeight: '700',
@@ -185,7 +230,8 @@ export const themes = {
       marginTop: '10pt',
       fontSize: '9pt',
       color: '#475569',
-      fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace"
+      fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+      width: '100%'
     },
     contactSeparator: { color: '#86efac' },
     contactLink: { color: '#16a34a' },
@@ -264,6 +310,21 @@ export const themes = {
       paddingBottom: '16pt',
       borderBottom: '0.5pt solid #d4d4d8'
     },
+    headerWithPhoto: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: '16pt',
+      textAlign: 'left'
+    },
+    photo: {
+      width: '72pt',
+      height: '72pt',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      border: '0.5pt solid #d4d4d8',
+      flexShrink: '0'
+    },
     name: {
       fontSize: '26pt',
       fontWeight: '300',
@@ -290,7 +351,8 @@ export const themes = {
       marginTop: '12pt',
       fontSize: '9.5pt',
       color: '#71717a',
-      letterSpacing: '0.5px'
+      letterSpacing: '0.5px',
+      width: '100%'
     },
     contactSeparator: { color: '#d4d4d8' },
     contactLink: { color: '#18181b' },
@@ -347,6 +409,21 @@ export const themes = {
       padding: '20mm 18mm 16pt 18mm',
       textAlign: 'center'
     },
+    headerWithPhoto: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: '16pt',
+      textAlign: 'left'
+    },
+    photo: {
+      width: '72pt',
+      height: '72pt',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      border: '3pt solid #fb923c',
+      flexShrink: '0'
+    },
     name: {
       fontSize: '24pt',
       fontWeight: '900',
@@ -371,7 +448,8 @@ export const themes = {
       gap: '8pt',
       marginTop: '12pt',
       fontSize: '9.5pt',
-      color: '#94a3b8'
+      color: '#94a3b8',
+      width: '100%'
     },
     contactSeparator: { color: '#334155' },
     contactLink: { color: '#fb923c' },

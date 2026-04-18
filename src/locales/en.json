@@ -50,6 +50,7 @@
     "addProject": "+ Add Project",
     "addLanguage": "+ Add Language",
     "remove": "Remove",
+    "clear": "Clear",
     "exampleData": "✨ Example",
     "loadExample": "Load",
     "exampleRu": "🇷🇺 Russian Resume",
@@ -69,6 +70,15 @@
     "terminal": "Terminal",
     "minimal": "Minimal",
     "bold": "Bold"
+  },
+  "photo": {
+    "addPhoto": "Add photo",
+    "upload": "Upload photo",
+    "change": "Change photo",
+    "remove": "Remove",
+    "cropTitle": "Crop photo",
+    "cancel": "Cancel",
+    "apply": "Apply"
   },
   "resume": {
     "summary": "Professional Summary",

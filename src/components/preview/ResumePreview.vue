@@ -34,13 +34,21 @@ function getLevelDisplay(level) {
     :style="[{ boxShadow: '0 4px 40px rgba(0,0,0,0.4)' }, theme.page]"
   >
     <!-- Header -->
-    <div :style="theme.header">
-      <h1 :style="theme.name">
-        {{ store.personal.name || 'Your Name' }}
-      </h1>
-      <p v-if="store.personal.title" :style="theme.title">
-        {{ store.personal.title }}
-      </p>
+    <div :style="[theme.header, store.showPhoto && store.photo ? theme.headerWithPhoto : {}]">
+      <!-- Photo -->
+      <img
+        v-if="store.showPhoto && store.photo"
+        :src="store.photo"
+        :style="theme.photo"
+      />
+      <div :style="store.showPhoto && store.photo ? { flex: '1' } : {}">
+        <h1 :style="theme.name">
+          {{ store.personal.name || 'Your Name' }}
+        </h1>
+        <p v-if="store.personal.title" :style="theme.title">
+          {{ store.personal.title }}
+        </p>
+      </div>
       <div :style="theme.contacts">
         <a v-if="store.personal.email" :href="'mailto:' + store.personal.email" style="display: inline-flex; align-items: center; gap: 3pt; color: inherit; text-decoration: none;">
           {{ store.personal.email }}

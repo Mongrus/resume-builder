@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import testPhoto from '@/assets/testPhoto.js'
 
 const testDataRu = {
   personal: {
@@ -122,6 +123,8 @@ const testDataEn = {
 
 export const useResumeStore = defineStore('resume', {
   state: () => ({
+    showPhoto: false,
+    photo: '',
     personal: {
       name: '',
       title: '',
@@ -184,6 +187,8 @@ export const useResumeStore = defineStore('resume', {
     fillTestData(lang = 'ru') {
       const data = lang === 'en' ? testDataEn : testDataRu
 
+      this.showPhoto = !!testPhoto
+      this.photo = testPhoto
       this.personal = data.personal
       this.summary = data.summary
       this.experience = data.experience.map(item => ({
